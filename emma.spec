@@ -33,7 +33,7 @@
 Summary:        Code Coverage Tool
 Name:           emma
 Version:        %{shortver}.5312
-Release:        7
+Release:        9
 Group:          Development/Java
 License:        CPL
 URL:            http://emma.sourceforge.net/
