@@ -1,0 +1,26 @@
+diff -up ./core/java12/com/vladium/emma/instr/InstrVisitor.java.64bitfix ./core/java12/com/vladium/emma/instr/InstrVisitor.java
+--- ./core/java12/com/vladium/emma/instr/InstrVisitor.java.64bitfix	2004-07-16 18:32:28.000000000 -0400
++++ ./core/java12/com/vladium/emma/instr/InstrVisitor.java	2008-12-10 09:37:04.000000000 -0500
+@@ -1435,6 +1435,7 @@ final class InstrVisitor extends Abstrac
+          */
+         void emit (final EmitCtx ctx, final byte [] code) // TODO: move 'code' into 'ctx'
+         {
++        	synchronized(Block.class) {
+             final ByteArrayOStream out = ctx.m_out;
+             final int first = m_first;
+             
+@@ -1450,6 +1451,7 @@ final class InstrVisitor extends Abstrac
+             
+             if (m_branch != null)
+                 m_branch.emit (ctx);
++		}
+         }
+         
+         public CodeSegment m_insertion;
+@@ -2206,4 +2208,4 @@ final class InstrVisitor extends Abstrac
+     private static final byte [] EMPTY_BYTE_ARRAY = new byte [0];
+ 
+ } // end of class
+-// ----------------------------------------------------------------------------
+\ No newline at end of file
++// ----------------------------------------------------------------------------

@@ -1,0 +1,12 @@
+diff -uNr core/java12/com/vladium/logging/Logger.java core/java12/com/vladium/logging/Logger.java
+--- core/java12/com/vladium/logging/Logger.java	2008-04-25 14:43:29.000000000 -0400
++++ core/java12/com/vladium/logging/Logger.java	2008-04-25 14:43:47.000000000 -0400
+@@ -70,7 +70,7 @@
+         if ((level < NONE) || (level > ALL))
+             throw new IllegalArgumentException ("invalid log level: " + level);
+         
+-        if ((out == null) || out.checkError ())
++        if (out == null)
+             throw new IllegalArgumentException ("null or corrupt input: out");
+         
+         return new Logger (level, out, prefix, classMask);
