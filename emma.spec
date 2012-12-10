@@ -144,3 +144,68 @@ cp -pr out/javadocs/* $RPM_BUILD_ROOT%{_javadocdir}/%{name}
 %defattr(-,root,root,-)
 %doc %{_javadocdir}/%{name}*
 
+
+
+%changelog
+* Sun Nov 27 2011 Guilherme Moro <guilherme@mandriva.com> 2.0.5312-9
++ Revision: 733920
+- rebuild
+- imported package emma
+
+
+* Fri Oct 28 2005 Nicolas Lécureuil <neoclust@mandriva.org> 0.8.2-8mdk
+- Fix BuildRequires
+
+* Fri Sep 30 2005 Nicolas Lécureuil <neoclust@mandriva.org> 0.8.2-7mdk
+ - Buildrequires fix 
+
+* Wed May 25 2005 Eskild Hustvedt <eskild@mandriva.org> 0.8.2-6mdk
+- %%mkrel
+- Fix url
+
+* Sun Dec 05 2004 Michael Scherer <misc@mandrake.org> 0.8.2-5mdk
+- Rebuild for new  python
+
+* Fri Aug 15 2003 Per Øyvind Karlsen <peroyvind@linux-mandrake.com> 0.8.2-4mdk
+- rebuild for new python
+- rm -rf $RPM_BUILD_ROOT in %%install, not %%prep
+- use %%configure and %%makeinstall macro
+- cleanups
+- bunzip2 icons
+- add unpackaged .desktop file
+
+* Thu Jan 16 2003 Laurent Culioli <laurent@mandrakesoft.com> 0.8.2-3mdk
+- rebuild
+
+* Fri Jul 05 2002 Lenny Cartier <lenny@mandrakesoft.com> 0.8.2-2mdk
+- buildrequires libpython2.2-devel
+- update url
+
+* Tue Jun 18 2002 Laurent Culioli <laurent@mandrakesoft.com> 0.8.2-1mdk
+- 0.8.2
+- png icons
+
+* Fri Oct 19 2001 Sebastien Dupont <sdupont@mandrakesoft.com> 0.8-4mdk
+- License.
+- menu-icons.
+
+* Mon Jun 18 2001 Frederic Crozat <fcrozat@mandrakesoft.com> 0.8-3mdk
+- New office menu struture
+- use find_lang macro
+
+* Tue Jan 09 2001 Lenny Cartier <lenny@mandrakesoft.com> 0.8-2mdk
+- some spec cleanings
+
+* Fri Dec 08 2000 Lenny Cartier <lenny@mandrakesoft.com> 0.8-1mdk
+- updated to 0.8
+
+* Wed Aug 30 2000 Lenny Cartier <lenny@mandrakesoft.com> 0.7-12mdk 
+- v0.7 
+
+* Wed Apr 26 2000 Lenny Cartier <lenny@mandrakesoft.com> 0.6-2mdk
+- fix group
+
+* Thu Dec 09 1999 Lenny Cartier <lenny@mandrakesoft.com>
+- new in contribs
+- make docs installing
+- mandrake adaptations
