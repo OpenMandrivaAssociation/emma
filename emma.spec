@@ -1,3 +1,4 @@
+%{?_javapackages_macros:%_javapackages_macros}
 # Copyright (c) 2000-2007, JPackage Project
 # All rights reserved.
 #
@@ -33,8 +34,8 @@
 Summary:        Code Coverage Tool
 Name:           emma
 Version:        %{shortver}.5312
-Release:        9
-Group:          Development/Java
+Release:        12.0%{?dist}
+Epoch:          0
 License:        CPL
 URL:            http://emma.sourceforge.net/
 Source0:        http://downloads.sourceforge.net/emma/%{name}-%{version}-src.zip
@@ -65,8 +66,8 @@ BuildRequires:  java-devel >= 0:1.6
 BuildRequires:  jpackage-utils >= 0:1.7.5-1jpp.3
 # For the timestamp hack (see above)
 BuildRequires:  bc
-Requires(post):    jpackage-utils >= 0:1.7.5-1jpp.3
-Requires(postun):  jpackage-utils >= 0:1.7.5-1jpp.3
+Requires:       jpackage-utils >= 0:1.7.5-1jpp.3
+
 
 BuildArch:      noarch
 
@@ -79,8 +80,6 @@ work fast and iterative.
 
 %package javadoc
 Summary:        Javadoc for %{name}
-Group:          Development/Java
-Requires:       jpackage-utils
 
 %description javadoc
 %{summary}.
@@ -93,27 +92,24 @@ cp -p %{SOURCE4} .
 # Make sure we don't use this no-source jar
 rm lib/internal/stamptool.jar
 
-%patch0 -p0 -b .orig
-%patch1 -p0 -b .orig
+%patch0 -b .orig
+%patch1 -b .orig
 %patch2 -p1 -b .orig
-%patch3 -p0 -b .orig
-%patch4 -p0 -b .orig
-%patch5 -p0 -b .orig
+%patch3 -b .orig
+%patch4 -b .orig
+%patch5 -b .orig
 
 %build
 [ -z "$JAVA_HOME" ] && export JAVA_HOME=%{_jvmdir}/java
 ant -Dbuild.compiler=modern build javadoc
 
 %install
-rm -rf $RPM_BUILD_ROOT
+
 install -d -m 755 $RPM_BUILD_ROOT%{_javadir}
 install -m 644 dist/%{name}.jar \
                $RPM_BUILD_ROOT%{_javadir}/%{name}.jar
 install -m 644 dist/%{name}_ant.jar \
                $RPM_BUILD_ROOT%{_javadir}/%{name}_ant.jar
-%add_to_maven_depmap emma emma %{version} JPP %{name}
-%add_to_maven_depmap emma emma_ant %{version} JPP %{name}_ant
-
 
 # poms
 install -d -m 755 $RPM_BUILD_ROOT%{_mavenpomdir}
@@ -121,19 +117,14 @@ install -pm 644 %{SOURCE1} \
     $RPM_BUILD_ROOT%{_mavenpomdir}/JPP-%{name}.pom
 install -pm 644 %{SOURCE2} \
     $RPM_BUILD_ROOT%{_mavenpomdir}/JPP-%{name}_ant.pom
+%add_maven_depmap JPP-%{name}.pom %{name}.jar
+%add_maven_depmap JPP-%{name}_ant.pom %{name}_ant.jar
 
 # javadoc
 install -d -m 755 $RPM_BUILD_ROOT%{_javadocdir}/%{name}
 cp -pr out/javadocs/* $RPM_BUILD_ROOT%{_javadocdir}/%{name}
 
-%post
-%update_maven_depmap
-
-%postun
-%update_maven_depmap
-
 %files
-%defattr(-,root,root,-)
 %doc cpl-v10.html
 %{_javadir}/*
 %{_mavenpomdir}/JPP-%{name}*
@@ -141,71 +132,74 @@ cp -pr out/javadocs/* $RPM_BUILD_ROOT%{_javadocdir}/%{name}
 
 %files javadoc
 %doc cpl-v10.html
-%defattr(-,root,root,-)
 %doc %{_javadocdir}/%{name}*
 
-
-
 %changelog
-* Sun Nov 27 2011 Guilherme Moro <guilherme@mandriva.com> 2.0.5312-9
-+ Revision: 733920
-- rebuild
-- imported package emma
+* Wed Aug 07 2013 gil cattaneo <puntogil@libero.it> 0:2.0.5312-12
+- fix rhbz#992213
+- update ant references in emma_ant pom file (gId only)
+- minor changes to adapt to current guideline
 
+* Sat Aug 03 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0:2.0.5312-11
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
 
-* Fri Oct 28 2005 Nicolas Lécureuil <neoclust@mandriva.org> 0.8.2-8mdk
-- Fix BuildRequires
+* Wed Feb 13 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0:2.0.5312-10
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
 
-* Fri Sep 30 2005 Nicolas Lécureuil <neoclust@mandriva.org> 0.8.2-7mdk
- - Buildrequires fix 
+* Wed Jul 18 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0:2.0.5312-9
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
 
-* Wed May 25 2005 Eskild Hustvedt <eskild@mandriva.org> 0.8.2-6mdk
-- %%mkrel
-- Fix url
+* Fri Jan 13 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0:2.0.5312-8
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
 
-* Sun Dec 05 2004 Michael Scherer <misc@mandrake.org> 0.8.2-5mdk
-- Rebuild for new  python
+* Tue Feb 08 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0:2.0.5312-7
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
 
-* Fri Aug 15 2003 Per Øyvind Karlsen <peroyvind@linux-mandrake.com> 0.8.2-4mdk
-- rebuild for new python
-- rm -rf $RPM_BUILD_ROOT in %%install, not %%prep
-- use %%configure and %%makeinstall macro
-- cleanups
-- bunzip2 icons
-- add unpackaged .desktop file
+* Fri Nov 26 2010 Stanislav Ochotnicky <sochotnicky@redhat.com> - 0:2.0.5312-6
+- Fix pom filenames (Resolves rhbz#655797)
+- Make few tweaks according to new guidelines
+- Make jar unversioned
 
-* Thu Jan 16 2003 Laurent Culioli <laurent@mandrakesoft.com> 0.8.2-3mdk
-- rebuild
+* Mon Jul 12 2010 Andrew Overholt <overholt@redhat.com> 0:2.0.5312-5
+- Ensure license is also in -javadoc package
 
-* Fri Jul 05 2002 Lenny Cartier <lenny@mandrakesoft.com> 0.8.2-2mdk
-- buildrequires libpython2.2-devel
-- update url
+* Fri Jul 24 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0:2.0.5312-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
 
-* Tue Jun 18 2002 Laurent Culioli <laurent@mandrakesoft.com> 0.8.2-1mdk
-- 0.8.2
-- png icons
+* Tue Feb 24 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0:2.0.5312-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_11_Mass_Rebuild
 
-* Fri Oct 19 2001 Sebastien Dupont <sdupont@mandrakesoft.com> 0.8-4mdk
-- License.
-- menu-icons.
+* Wed Dec 10 2008 Andrew Overholt <overholt@redhat.com> 0:2.0.5312-2
+- Add patch to fix 64-bit AIOOB.
 
-* Mon Jun 18 2001 Frederic Crozat <fcrozat@mandrakesoft.com> 0.8-3mdk
-- New office menu struture
-- use find_lang macro
+* Wed Jul  9 2008 Tom "spot" Callaway <tcallawa@redhat.com> - 2.0.5312-1
+- drop repotag
+- fix version, release to be sane
 
-* Tue Jan 09 2001 Lenny Cartier <lenny@mandrakesoft.com> 0.8-2mdk
-- some spec cleanings
+* Mon Jul 07 2008 Andrew Overholt <overholt@redhat.com> 2.0-0.5312.2jpp.4
+- Remove requirement on maven2 as jpackage-utils now owns the maven POMs
+  and fragments directories.
 
-* Fri Dec 08 2000 Lenny Cartier <lenny@mandrakesoft.com> 0.8-1mdk
-- updated to 0.8
+* Fri May 30 2008 Andrew Overholt <overholt@redhat.com> 2.0-0.5312.2jpp.3
+- Bump release because I forgot to add a source file.
 
-* Wed Aug 30 2000 Lenny Cartier <lenny@mandrakesoft.com> 0.7-12mdk 
-- v0.7 
+* Wed May 28 2008 Andrew Overholt <overholt@redhat.com> 2.0-0.5312.2jpp.2
+- Review (rhbz#444511) fixes:  '-' in permissions, maven2 requirement,
+  file ownership of maven stuff, require OpenJDK.
 
-* Wed Apr 26 2000 Lenny Cartier <lenny@mandrakesoft.com> 0.6-2mdk
-- fix group
+* Fri Apr 25 2008 Andrew Overholt <overholt@redhat.com> 0:2.0-0.5312.2jpp.1
+- Fedora-ify (remove Vendor, Distribution, javadoc %%post{,un}, license
+  -> "CPL", add 1.%%{?dist} to release, change groups to shut up rpmlint,
+  remove %%section free).
+- Remove gnu-crypto requirement for GCJ.
+- Copy patch from Gentoo build for 1.5 API changes.
+- Add hacks to avoid having to use no-source class during build.
 
-* Thu Dec 09 1999 Lenny Cartier <lenny@mandrakesoft.com>
-- new in contribs
-- make docs installing
-- mandrake adaptations
+* Fri Jul 06 2007 Ralph Apel <r.apel at r-apel.de> 0:2.0-0.5312.2jpp
+- Make Vendor, Distribution based on macro
+- Add -javadoc subpackage
+- Add gcj_support option
+- Add poms and depmap frags
+
+* Wed Feb 01 2006 Ralph Apel <r.apel at r-apel.de> 0:2.0-0.5312.1jpp
+- First JPackage release.
