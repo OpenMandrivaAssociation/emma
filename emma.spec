@@ -92,12 +92,12 @@ cp -p %{SOURCE4} .
 # Make sure we don't use this no-source jar
 rm lib/internal/stamptool.jar
 
-%patch0 -b .orig
-%patch1 -b .orig
-%patch2 -p1 -b .orig
-%patch3 -b .orig
-%patch4 -b .orig
-%patch5 -b .orig
+%patch0
+%patch1
+%patch2 -p1
+%patch3 -b
+%patch4 -b
+%patch5 -b
 
 %build
 [ -z "$JAVA_HOME" ] && export JAVA_HOME=%{_jvmdir}/java
