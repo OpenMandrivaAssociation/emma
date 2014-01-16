@@ -95,9 +95,9 @@ rm lib/internal/stamptool.jar
 %patch0
 %patch1
 %patch2 -p1
-%patch3 -b
-%patch4 -b
-%patch5 -b
+%patch3
+%patch4
+%patch5
 
 %build
 [ -z "$JAVA_HOME" ] && export JAVA_HOME=%{_jvmdir}/java
