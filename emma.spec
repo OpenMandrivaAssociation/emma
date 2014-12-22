@@ -34,7 +34,8 @@
 Summary:        Code Coverage Tool
 Name:           emma
 Version:        %{shortver}.5312
-Release:        12.0%{?dist}
+Release:        15.0
+Group:		Development/Java
 Epoch:          0
 License:        CPL
 URL:            http://emma.sourceforge.net/
@@ -63,10 +64,9 @@ Requires:       java >= 0:1.4.2
 Requires:       jaxp_parser_impl
 BuildRequires:  ant >= 0:1.6.5
 BuildRequires:  java-devel >= 0:1.6
-BuildRequires:  jpackage-utils >= 0:1.7.5-1jpp.3
+BuildRequires:  javapackages-local
 # For the timestamp hack (see above)
 BuildRequires:  bc
-Requires:       jpackage-utils >= 0:1.7.5-1jpp.3
 
 
 BuildArch:      noarch
@@ -104,35 +104,17 @@ rm lib/internal/stamptool.jar
 ant -Dbuild.compiler=modern build javadoc
 
 %install
+%mvn_artifact %{SOURCE1} dist/%{name}.jar
+%mvn_artifact %{SOURCE2} dist/%{name}_ant.jar
 
-install -d -m 755 $RPM_BUILD_ROOT%{_javadir}
-install -m 644 dist/%{name}.jar \
-               $RPM_BUILD_ROOT%{_javadir}/%{name}.jar
-install -m 644 dist/%{name}_ant.jar \
-               $RPM_BUILD_ROOT%{_javadir}/%{name}_ant.jar
+# JAVADOCS
+%mvn_install -J out/javadocs/
 
-# poms
-install -d -m 755 $RPM_BUILD_ROOT%{_mavenpomdir}
-install -pm 644 %{SOURCE1} \
-    $RPM_BUILD_ROOT%{_mavenpomdir}/JPP-%{name}.pom
-install -pm 644 %{SOURCE2} \
-    $RPM_BUILD_ROOT%{_mavenpomdir}/JPP-%{name}_ant.pom
-%add_maven_depmap JPP-%{name}.pom %{name}.jar
-%add_maven_depmap JPP-%{name}_ant.pom %{name}_ant.jar
-
-# javadoc
-install -d -m 755 $RPM_BUILD_ROOT%{_javadocdir}/%{name}
-cp -pr out/javadocs/* $RPM_BUILD_ROOT%{_javadocdir}/%{name}
-
-%files
+%files -f .mfiles
 %doc cpl-v10.html
-%{_javadir}/*
-%{_mavenpomdir}/JPP-%{name}*
-%{_mavendepmapfragdir}/%{name}
 
-%files javadoc
+%files javadoc -f .mfiles-javadoc
 %doc cpl-v10.html
-%doc %{_javadocdir}/%{name}*
 
 %changelog
 * Wed Aug 07 2013 gil cattaneo <puntogil@libero.it> 0:2.0.5312-12
