@@ -34,7 +34,7 @@
 Summary:        Code Coverage Tool
 Name:           emma
 Version:        %{shortver}.5312
-Release:        15.1
+Release:        15.2
 Group:		Development/Java
 Epoch:          0
 License:        CPL
