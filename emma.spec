@@ -38,7 +38,7 @@ Release:        15.2
 Group:		Development/Java
 Epoch:          0
 License:        CPL
-URL:            http://emma.sourceforge.net/
+URL:            https://emma.sourceforge.net/
 Source0:        http://downloads.sourceforge.net/emma/%{name}-%{version}-src.zip
 Source1:        emma-2.0.5312.pom
 Source2:        emma_ant-2.0.5312.pom
